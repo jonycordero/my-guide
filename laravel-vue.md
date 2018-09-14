@@ -1,7 +1,6 @@
 # Paginacion y busquedas con Vue y laravel 
 Poner este fracmento de codigo para la paginacion y la busqueda
-
-
+```
 public function listFull(Request $request){
         //dd($request['query']);
         $productos = Producto::orderBy('id', 'ASC')
@@ -25,14 +24,11 @@ public function listFull(Request $request){
             'productos' => $productos
         ];
     }
----------------------------------------------------------------------------------------------------------------
-2. completar el listado de los items
-------------------------------------------------------------------------------------------------------------
-this.listFull(1);
-
---------------------------------------------------------
-// Declarar los atributos de pagination y offset
---------------------------------------------------------
+```
+## 2. completar el listado de los items
+```this.listFull(1);```
+## 3. Declarar los atributos de pagination y offset
+````
 pagination: {
             total: 0,
             current_page: 0,
@@ -44,20 +40,21 @@ pagination: {
 offset : 4,
 query:'',
 loadbusqueda:false,
-------------------------------------------------------------------
-Modificamos las peticiones get para enviar como parametro el numero de pagina y la busqueda
-------------------------------------------------------------------------------------------------
+````
+## 4. Modificamos las peticiones get para enviar como parametro el numero de pagina y la busqueda
+````
 this.loadbusqueda = true;
 axios.get(this.url+'/listFull?page='+page+'&query='+this.query)
 
 this.productos = response.data.productos.data;
 this.pagination  = response.data.pagination;
 this.loadbusqueda = false;
-
+````
 -------------------------------------------------------------------------------------------------
-Agregamos cmputed
+## 5.Agregamos COMPUTED
 ---------------------------------------------------------------------------------------------------
-    computed: {
+ ````
+ computed: {
         isActived: function() {
             return this.pagination.current_page;
         },
@@ -84,22 +81,24 @@ Agregamos cmputed
             return pagesArray;
         }
     },
---------------------------------------------------------------------------------------------------------
-Agregamos el metodo para cambiar depagina con el paginador
---------------------------------------------------------------------------------------------------------
+ ````
+## 6. Agregamos el metodo para cambiar depagina con el paginador
+
 changePage: function(page) {
             this.pagination.current_page = page;
             this.listFull(page); // ojo tener en cuenta tu metodo para listar datos
         }
---------------------------------------------------------------------------------------------------------
+## 7. Agregamos a la vista el HTML del buscador
+````
 <div class="input-group">
      <span v-if="loadbusqueda" class="input-group-addon"><i class="fa fa-spinner fa-spin"></i></span>
      <span v-else class="input-group-addon">Buscar</span>
      <input v-on:keyup.enter="listFull()" v-model="query" type="text" class="form-control" placeholder="Codigo, producto, marca, categoria">
 </div>
 <br>
-
------------------------------------------------------------------------------------------------------------------
+````
+## 8. Agregamos a la vista el HTML de la paginacion
+``
 <!-- /.box-body -->
             <div class="box-footer">
                 <nav>
@@ -125,3 +124,4 @@ changePage: function(page) {
                     <p>viendo @{{ pagination.from }} a @{{ pagination.to }} de @{{ pagination.total }} resultados</p>
                 </div>
             </div>
+ ``
